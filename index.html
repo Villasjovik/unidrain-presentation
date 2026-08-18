@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Badrummet på Villa Sjövik · ett upplägg kring Unidrain</title>
+<meta name="description" content="Rummet som det står idag, och två nivåer att ta det till: Reframe i svart utan ingrepp, eller GlassLine Black. Med tre frågor tillbaka till Johannes.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0C1013">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Badrummet på Villa Sjövik">
+<meta property="og:description" content="Så här ser rummet ut idag, och så här skulle det kunna se ut. Ingenting är låst.">
+<meta property="og:url" content="https://villasjovik.github.io/unidrain-presentation/">
+<meta property="og:image" content="https://villasjovik.github.io/unidrain-presentation/og-image.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/familjen-roman-latin.woff2" crossorigin>
+<link rel="preload" as="image" href="assets/img/fore.jpg">
+<style>
+/* ------------------------------------------------------------------ fonts */
+@font-face{font-family:Familjen;src:url(assets/fonts/familjen-roman-latin.woff2) format('woff2');
+  font-weight:400 700;font-style:normal;font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+2000-206F,U+20AC,U+2122,U+2212}
+@font-face{font-family:Familjen;src:url(assets/fonts/familjen-roman-latinext.woff2) format('woff2');
+  font-weight:400 700;font-style:normal;font-display:swap;
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+1E00-1E9F,U+2020,U+20A0-20AB,U+2113}
+@font-face{font-family:Familjen;src:url(assets/fonts/familjen-italic-latin.woff2) format('woff2');
+  font-weight:400 700;font-style:italic;font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2212}
+
+/* ----------------------------------------------------------------- tokens */
+:root{
+  --wet:#0C1013;          /* våt mörk sten */
+  --wet-2:#141A1F;
+  --wet-3:#1B2329;
+  --mist:#DEE7EB;         /* imma */
+  --mist-2:#84929B;
+  --steel-a:#5F6B72;      /* borstat stål, skuggsida */
+  --steel-b:#DCE6EA;      /* stålets högdager */
+  --gauge:#7FA9C4;        /* måttlinjer — kall, läser som vatten */
+  --rule:rgba(222,231,235,.13);
+  --gut:clamp(1.25rem,4.4vw,5.5rem);
+  --line:clamp(44px,6.4vw,104px);   /* rinnans x-position */
+  --band:clamp(4.5rem,11vh,9rem);
+  --ease:cubic-bezier(.23,1,.32,1);
+  --ease-io:cubic-bezier(.77,0,.175,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{
+  margin:0;background:var(--wet);color:var(--mist);
+  font-family:Familjen,system-ui,-apple-system,sans-serif;font-weight:400;
+  font-size:clamp(.95rem,.9rem + .2vw,1.0625rem);line-height:1.6;letter-spacing:-.005em;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;
+}
+img{max-width:100%;height:auto;display:block}
+::selection{background:rgba(127,169,196,.32);color:#fff}
+:focus-visible{outline:2px solid var(--gauge);outline-offset:4px;border-radius:1px}
+
+/* ljuset från fönstret */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(110% 72% at 86% 8%,rgba(190,216,227,.15),transparent 60%)}
+
+/* ------------------------------------------------- ambient: ljus ur fas */
+/* Detunade oscillatorer — ingenting i lockstep, samma princip som pitchernas orbs. */
+.pool{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;
+  animation:drift 21s ease-in-out infinite;will-change:transform}
+.pool-1{width:660px;height:660px;top:-200px;right:-140px;animation-duration:23s;
+  background:radial-gradient(circle,rgba(127,169,196,.22),transparent 68%)}
+.pool-2{width:480px;height:480px;bottom:-160px;left:-120px;animation-delay:-11s;animation-duration:27s;
+  background:radial-gradient(circle,rgba(220,230,234,.09),transparent 68%)}
+.pool-3{width:300px;height:300px;top:46%;right:16%;animation-delay:-7s;animation-duration:18s;
+  background:radial-gradient(circle,rgba(127,169,196,.16),transparent 68%)}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}
+  34%{transform:translate(38px,-28px) scale(1.05)}
+  67%{transform:translate(-26px,36px) scale(.97)}}
+.par{position:fixed;inset:0;pointer-events:none;z-index:0;will-change:transform}
+
+/* --------------------------------------------------------------- snap-nav */
+.snap-nav{position:fixed;left:50%;top:1.1rem;transform:translate(-50%,-160%);z-index:60;
+  display:flex;align-items:center;gap:14px;padding:9px 18px;border-radius:100px;
+  background:rgba(20,26,31,.66);backdrop-filter:blur(22px) saturate(1.25);
+  -webkit-backdrop-filter:blur(22px) saturate(1.25);
+  border:1px solid rgba(220,230,234,.16);opacity:0;
+  box-shadow:0 6px 30px rgba(0,0,0,.45);
+  transition:transform .9s var(--ease),opacity .6s var(--ease),border-color .4s var(--ease)}
+.snap-nav.on{transform:translate(-50%,0);opacity:1}
+.snap-nav:hover{border-color:rgba(127,169,196,.4)}
+.snap-nav .lbl{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--mist-2);
+  white-space:nowrap}
+.snap-dots{display:flex;align-items:center;gap:10px}
+.snap-w{display:flex;align-items:center;gap:0;background:none;border:0;padding:0;cursor:pointer}
+.snap-d{width:7px;height:7px;border-radius:50%;background:rgba(222,231,235,.2);
+  transition:background .4s var(--ease),transform .4s var(--ease),box-shadow .4s var(--ease)}
+.snap-n{display:inline-block;max-width:0;opacity:0;overflow:hidden;white-space:nowrap;margin-left:0;
+  font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mist-2);
+  transition:max-width .45s var(--ease),opacity .35s var(--ease),margin .35s var(--ease)}
+.snap-nav:hover .snap-n{max-width:140px;opacity:1;margin-left:7px}
+.snap-w:hover .snap-d{background:var(--gauge);transform:scale(1.4);box-shadow:0 0 9px rgba(127,169,196,.6)}
+.snap-w:hover .snap-n{color:var(--mist)}
+.snap-w.is-active .snap-d{background:var(--steel-b);transform:scale(1.5);
+  animation:breath 2.8s ease-in-out infinite}
+.snap-w.is-active .snap-n{color:var(--mist)}
+@keyframes breath{0%,100%{box-shadow:0 0 9px rgba(220,230,234,.55),0 0 24px rgba(127,169,196,.24)}
+  50%{box-shadow:0 0 14px rgba(220,230,234,.75),0 0 36px rgba(127,169,196,.4)}}
+@media (max-width:640px){.snap-nav{display:none}}
+.snap-rail{display:none;position:fixed;right:9px;top:50%;transform:translateY(-50%);z-index:60;
+  flex-direction:column;gap:12px}
+.rail-d{width:6px;height:6px;border-radius:50%;background:rgba(222,231,235,.24);border:0;padding:0;
+  transition:background .3s var(--ease)}
+.rail-d.is-active{background:var(--steel-b);box-shadow:0 0 9px rgba(220,230,234,.6);
+  animation:breath 2.8s ease-in-out infinite}
+@media (max-width:640px){.snap-rail{display:flex}}
+
+/* ------------------------------------------------------- ram kring bilder */
+/* Passepartout i hårfint stål plus beskärningsmärken ur ritningsvärlden. */
+.framed{position:relative}
+.framed>figure,.framed>.compare,.framed.is-fig{position:relative;z-index:1}
+.framed::before{content:'';position:absolute;inset:-12px;pointer-events:none;z-index:4;
+  border:1px solid rgba(220,230,234,.17);transition:border-color .5s var(--ease)}
+.framed::after{content:'';position:absolute;inset:-12px;pointer-events:none;z-index:5;opacity:.62;
+  background:
+    linear-gradient(var(--steel-b),var(--steel-b)) left top/15px 1px no-repeat,
+    linear-gradient(var(--steel-b),var(--steel-b)) left top/1px 15px no-repeat,
+    linear-gradient(var(--steel-b),var(--steel-b)) right top/15px 1px no-repeat,
+    linear-gradient(var(--steel-b),var(--steel-b)) right top/1px 15px no-repeat,
+    linear-gradient(var(--steel-b),var(--steel-b)) left bottom/15px 1px no-repeat,
+    linear-gradient(var(--steel-b),var(--steel-b)) left bottom/1px 15px no-repeat,
+    linear-gradient(var(--steel-b),var(--steel-b)) right bottom/15px 1px no-repeat,
+    linear-gradient(var(--steel-b),var(--steel-b)) right bottom/1px 15px no-repeat;
+  transition:opacity .5s var(--ease)}
+@media (hover:hover) and (pointer:fine){
+  .framed:hover::before{border-color:rgba(127,169,196,.42)}
+  .framed:hover::after{opacity:1}
+}
+/* bildens egen innerring, så plåten inte flyter ut i mörkret */
+.ring{box-shadow:0 24px 60px -24px rgba(0,0,0,.75),inset 0 0 0 1px rgba(220,230,234,.14)}
+
+/* ------------------------------------------------------------------ layout */
+.page{position:relative;z-index:1}
+.wrap{padding-inline:var(--gut)}
+.inner{margin-left:calc(var(--line) + clamp(1.1rem,3.4vw,4rem))}
+.band{padding-block:var(--band)}
+
+/* RINNAN — genomgående, sidans bärande grafiska element */
+.drain{position:absolute;left:calc(var(--gut) + var(--line));top:0;bottom:0;width:4px;z-index:2;
+  background:linear-gradient(to right,var(--steel-a),var(--steel-b) 42%,#96A2A8);
+  box-shadow:0 0 26px rgba(220,230,234,.18)}
+.drain::before{content:'';position:absolute;left:-2px;right:-2px;top:0;height:16vh;
+  background:linear-gradient(to bottom,var(--wet),transparent)}
+.drain::after{content:'';position:absolute;left:-2px;right:-2px;bottom:0;height:22vh;
+  background:linear-gradient(to top,var(--wet),transparent)}
+.drop{position:absolute;left:calc(var(--gut) + var(--line));width:4px;height:96px;border-radius:2px;z-index:2;
+  background:linear-gradient(to bottom,transparent,rgba(232,245,250,.9));
+  animation:fall 4.2s cubic-bezier(.4,0,.9,.55) infinite}
+.drop.b{animation-delay:2.1s;opacity:.45}
+@keyframes fall{0%{top:-8%}100%{top:108%}}
+
+/* --------------------------------------------------------------- typografi */
+h1,h2,h3{margin:0;font-weight:400;letter-spacing:-.035em;line-height:1.02;text-wrap:balance}
+.display{font-size:clamp(2.9rem,7.4vw,6.2rem);line-height:.93;letter-spacing:-.042em;color:#F1F7F9}
+.display em{font-style:normal;color:var(--mist-2);display:block}
+.h2{font-size:clamp(1.75rem,3.9vw,3.1rem);line-height:1.05}
+.h3{font-size:clamp(1.2rem,1.5vw + .85rem,1.85rem);letter-spacing:-.028em}
+.lead{max-width:34ch;color:var(--mist-2);font-size:clamp(1.02rem,.55vw + .88rem,1.28rem);line-height:1.5}
+.prose{max-width:58ch;color:var(--mist-2)}
+.prose p + p{margin-top:1.05em}
+.prose strong{color:var(--mist);font-weight:400}
+.label{font-size:10px;line-height:1.3;letter-spacing:.2em;text-transform:uppercase;color:var(--steel-a)}
+.num{font-variant-numeric:tabular-nums}
+.voice{font-style:italic;font-size:clamp(1.1rem,1vw + .85rem,1.6rem);line-height:1.45;
+  letter-spacing:-.02em;max-width:30ch;color:#E4EDF0}
+
+/* ------------------------------------------------------------------ header */
+header.mast{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;
+  padding-block:1.5rem 1.2rem;border-bottom:1px solid var(--rule)}
+header.mast img{height:20px;width:auto;filter:brightness(0) invert(1);opacity:.9}
+header.mast .who{display:flex;gap:1.6rem;align-items:baseline;flex-wrap:wrap}
+
+/* -------------------------------------------------------------------- hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(300px,.98fr);
+  gap:clamp(1.8rem,4.4vw,5rem);align-items:center;padding-block:clamp(2rem,6vh,5rem)}
+.hero__meta{display:flex;gap:1.8rem;flex-wrap:wrap;margin-top:2.2rem;
+  padding-top:1.1rem;border-top:1px solid var(--rule)}
+.hero__meta div{display:flex;flex-direction:column;gap:.3rem}
+.hero__meta .v{font-size:13px;color:var(--mist)}
+
+/* ------------------------------------------------- före/efter, den mätta */
+@property --wipe{syntax:'<percentage>';inherits:true;initial-value:100%}
+
+.plate{position:relative;padding:2.4rem 2.9rem 0 0;--wipe:100%}
+.compare{position:relative;overflow:hidden;background:var(--wet-2);
+  aspect-ratio:3/4;box-shadow:0 24px 60px -24px rgba(0,0,0,.75);
+  animation:pendel 7.6s var(--ease-io) .7s infinite}
+.compare img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:saturate(.86) contrast(1.04) brightness(.94)}
+.compare .after{clip-path:inset(0 0 0 var(--wipe))}
+.compare .handle{position:absolute;top:0;bottom:0;left:var(--wipe);width:2px;
+  background:linear-gradient(to bottom,transparent,var(--steel-b) 12%,var(--steel-b) 88%,transparent);
+  box-shadow:0 0 16px rgba(220,230,234,.45)}
+.compare .handle::after{content:'';position:absolute;top:50%;left:50%;width:30px;height:30px;
+  transform:translate(-50%,-50%) rotate(45deg);
+  border:1px solid var(--steel-b);background:rgba(12,16,19,.55);backdrop-filter:blur(3px)}
+/* pendeln: håll före, svep, håll efter, svep tillbaka */
+@keyframes pendel{
+  0%,10%   {--wipe:100%}
+  27%,58%  {--wipe:14%}
+  76%,100% {--wipe:100%}
+}
+.tag{position:absolute;bottom:.75rem;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  padding:.32rem .55rem;z-index:3}
+.tag.l{left:.75rem;color:var(--mist);background:rgba(12,16,19,.62)}
+.tag.r{right:.75rem;color:#08131B;background:var(--steel-b)}
+
+/* måttlinjer, hämtade ur ritningsvärlden */
+.dimh,.dimv{position:absolute;color:var(--gauge);pointer-events:none}
+.dimh{left:0;right:2.9rem;top:1.15rem;height:1px;background:currentColor;opacity:.75}
+.dimh::before,.dimh::after{content:'';position:absolute;top:-4px;height:9px;width:1px;background:currentColor}
+.dimh::before{left:0}.dimh::after{right:0}
+.dimv{top:2.4rem;bottom:0;right:1.35rem;width:1px;background:currentColor;opacity:.75}
+.dimv::before,.dimv::after{content:'';position:absolute;left:-4px;width:9px;height:1px;background:currentColor}
+.dimv::before{top:0}.dimv::after{bottom:0}
+.dimh span,.dimv span{position:absolute;background:var(--wet);padding:0 .45rem;
+  font-size:9.5px;letter-spacing:.14em;white-space:nowrap}
+.dimh span{left:50%;top:50%;transform:translate(-50%,-50%)}
+.dimv span{top:50%;left:50%;transform:translate(-50%,-50%) rotate(90deg)}
+
+@media (prefers-reduced-motion:reduce){
+  .drop{display:none}
+  .compare{animation:none;--wipe:46%}
+}
+
+/* ------------------------------------------------------------------ nivåer */
+.niva{border-top:1px solid var(--rule)}
+.niva__head{display:flex;align-items:baseline;gap:clamp(1rem,2.4vw,2.4rem);margin-bottom:clamp(1.6rem,4vh,3rem)}
+.niva__n{font-size:clamp(2rem,4vw,3.4rem);line-height:1;color:var(--steel-a);letter-spacing:-.04em}
+.niva__grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,42%);
+  gap:clamp(1.6rem,3.6vw,4rem);align-items:start}
+.niva__shot{position:relative;overflow:hidden;background:var(--wet-2);
+  box-shadow:0 20px 52px -24px rgba(0,0,0,.7)}
+.niva__shot img{width:100%;filter:saturate(.86) contrast(1.04) brightness(.94)}
+.niva__shot figcaption{position:absolute;left:.75rem;bottom:.75rem;font-size:9.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--mist);background:rgba(12,16,19,.62);padding:.32rem .55rem}
+
+/* specifikationstabell — ritningens språk */
+.spec{margin:1.8rem 0 0;display:grid;gap:0;border-top:1px solid var(--rule)}
+.spec__row{display:grid;grid-template-columns:minmax(6.5rem,26%) 1fr;gap:1rem;
+  padding:.72rem 0;border-bottom:1px solid var(--rule)}
+.spec dt{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--steel-a);padding-top:.22rem}
+.spec dd{margin:0;font-size:14.5px;color:var(--mist)}
+.spec dd em{font-style:italic;color:var(--gauge)}
+
+/* varningsnot, den ärliga raden */
+.caveat{margin-top:1.6rem;padding:1rem 1.15rem;border:1px solid rgba(127,169,196,.28);
+  background:rgba(127,169,196,.06);color:var(--mist-2);font-size:14px;max-width:56ch}
+.caveat b{color:var(--gauge);font-weight:400;display:block;margin-bottom:.3rem;
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase}
+
+/* delarna */
+.parts{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));
+  gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:clamp(1.8rem,4vh,3rem)}
+/* delarna ligger som ljusa katalogplattor mot den våta grunden */
+.part{background:#E9ECEC;padding:0;position:relative;
+  transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+@media (hover:hover) and (pointer:fine){
+  .part:hover{transform:translateY(-3px);box-shadow:0 12px 28px -12px rgba(0,0,0,.7),0 0 0 1px rgba(127,169,196,.5);z-index:2}
+}
+.part img{width:100%;aspect-ratio:400/230;object-fit:cover;mix-blend-mode:multiply}
+.part span{display:block;padding:.55rem .75rem .75rem;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:#5C666D;background:#E9ECEC}
+
+/* ------------------------------------------------------------------ frågor */
+.ask__list{list-style:none;margin:clamp(1.6rem,4vh,2.8rem) 0 0;padding:0;display:grid;gap:0}
+.ask__item{display:grid;grid-template-columns:2.6rem 1fr;gap:1.2rem;
+  padding:1.35rem 0;border-top:1px solid var(--rule)}
+.ask__q{margin:0;font-size:clamp(1.05rem,1vw + .78rem,1.42rem);letter-spacing:-.025em;color:#E9F1F4}
+.ask__note{margin:.4rem 0 0;color:var(--mist-2);font-size:14px;max-width:52ch}
+.close{margin-top:clamp(2rem,5vh,3.4rem);padding-top:1.4rem;border-top:1px solid var(--rule);
+  display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap}
+
+footer{border-top:1px solid var(--rule);padding-block:1.6rem 2.6rem;
+  display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;color:var(--steel-a);font-size:11.5px}
+footer img{height:16px;width:auto;filter:brightness(0) invert(1);opacity:.45}
+
+/* ------------------------------------------------------------- avslöjanden */
+.rv{opacity:0;transform:translateY(14px);
+  transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.in{opacity:1;transform:none}
+html:not(.js) .rv{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{transition:none}}
+
+/* --------------------------------------------------------------- responsiv */
+@media (max-width:900px){
+  :root{--line:26px}
+  .hero,.niva__grid{grid-template-columns:1fr}
+  .plate{padding:2.2rem 2.6rem 0 0;max-width:520px}
+  .niva__shot{max-width:560px}
+  header.mast .who{gap:1rem}
+}
+@media (max-width:560px){
+  .hero__meta{gap:1.1rem}
+  .spec__row{grid-template-columns:1fr;gap:.2rem}
+  .ask__item{grid-template-columns:1.9rem 1fr;gap:.9rem}
+}
+</style>
+</head>
+<body>
+<!--
+THESIS: Ett riktigt rum, mätt och visat i förvandling, med den ena nivån ärligt skild från den andra.
+  Refuserar samarbetssidans upplägg: hero, fördelskort, paketpriser, CTA.
+OWN-WORLD: Våt mörk sten som grund, en rinna i borstat stål som löper genom hela sidan och som allt
+  innehåll grenar av från, måttlinjer och specifikationstabeller lånade ur den arkitektoniska
+  detaljritningen, en svensk grotesk i extrem skalkontrast, kallt vattenblått som enda accent.
+STORY: Johannes ser förvandlingen pendla fram och tillbaka innan han hunnit läsa en rad, känner igen
+  sitt eget förslag från mötet, ser att golvfrågan är läst och inte gömd, och svarar på tre frågor.
+FIRST VIEWPORT: Rinnan till vänster. Rubriken stor och lågt i vänsterkolumnen, före/efter-plattan
+  mätt med måttlinjer till höger och pendlande av sig själv från första sekunden.
+FORM: Riktning C (Fallet) med riktning A:s (Snittet) mätspråk och före/efter-svep. Vald av Lucas.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+-->
+
+<div class="par" id="par" aria-hidden="true">
+  <span class="pool pool-1"></span><span class="pool pool-2"></span><span class="pool pool-3"></span>
+</div>
+
+<nav class="snap-nav" id="snapnav" aria-label="Sektionsnavigation">
+  <span class="lbl" id="snaplbl">Intro</span>
+  <span class="snap-dots" id="snapdots"></span>
+</nav>
+<div class="snap-rail" id="snaprail" aria-hidden="true"></div>
+
+<div class="page">
+  <div class="drain" aria-hidden="true"></div>
+  <div class="drop" aria-hidden="true"></div>
+  <div class="drop b" aria-hidden="true"></div>
+
+  <div class="wrap"><div class="inner">
+
+    <header class="mast">
+      <img src="assets/img/unidrain.svg" alt="Unidrain" width="900" height="132">
+      <div class="who">
+        <span class="label">Villa Sjövik</span>
+        <span class="label num">Augusti 2026</span>
+      </div>
+    </header>
+
+    <!-- ==================================================== hero -->
+    <section class="hero" id="intro">
+      <div>
+        <h1 class="display rv">Detaljen<em>som avgör</em></h1>
+        <p class="lead rv">Du bad om att få se hur vi tänker oss förvandlingen. Här är rummet, och två nivåer att ta det till.</p>
+        <div class="hero__meta rv">
+          <div><span class="label">Objekt</span><span class="v">Villa Sjövik, badrum</span></div>
+          <div><span class="label">Underlag till</span><span class="v">Johannes Walter, Unidrain</span></div>
+          <div><span class="label">Räckvidd</span><span class="v num">194 000 följare</span></div>
+        </div>
+      </div>
+
+      <div class="plate framed rv">
+        <div class="dimh" aria-hidden="true"><span>1 240</span></div>
+        <div class="dimv" aria-hidden="true"><span>2 100</span></div>
+        <figure class="compare ring" style="margin:0">
+          <img class="before" src="assets/img/fore.jpg" alt="Badrummet på Villa Sjövik idag, med en rundad duschkabin i krom." width="1500" height="2000" fetchpriority="high">
+          <img class="after" src="assets/img/efter-glassline.jpg" alt="Samma badrum med en rak glaspanel med smal svart kantprofil i duschhörnet." width="1500" height="2000">
+          <span class="handle" aria-hidden="true"></span>
+          <figcaption class="tag l">Idag</figcaption>
+          <span class="tag r">GlassLine Black</span>
+        </figure>
+      </div>
+    </section>
+
+    <!-- =============================================== statement -->
+    <section class="band" style="border-top:1px solid var(--rule)">
+      <p class="voice rv">Det du sa om att väva ihop den svarta serien med den svarta panelen på golvbrunnen är precis rätt tänkt. Det är därifrån det här är byggt.</p>
+      <div class="prose rv" style="margin-top:1.8rem">
+        <p>Rummet är smalt. Duschen står i hörnet och är det första man ser när dörren öppnas, så det är där ett byte märks mest.</p>
+        <p>Vi har delat upp det i två nivåer, eftersom de kräver olika mycket av ett badrum. <strong>Ingenting här är låst.</strong></p>
+      </div>
+    </section>
+
+    <!-- ================================================= nivå 01 -->
+    <section class="niva band" id="niva-01">
+      <div class="niva__head rv">
+        <span class="niva__n num">01</span>
+        <div>
+          <h2 class="h2">Uppfräschningen</h2>
+          <p class="label" style="margin:.5rem 0 0">Reframe Collection · svart</p>
+        </div>
+      </div>
+
+      <div class="niva__grid">
+        <div>
+          <div class="prose rv">
+            <p>Det här är nivån du själv beskrev på mötet: någonting <strong>vem som helst kan köpa utan att göra ett stort ingrepp i badrummet.</strong> Inget rivs, ingenting gjuts om. Tillbehören byts, och rummet läser om sig självt.</p>
+            <p>Det är också den nivå som är sann för det här huset just nu. Klinkern ligger kvar.</p>
+          </div>
+          <dl class="spec rv">
+            <div class="spec__row"><dt>Serie</dt><dd>Reframe Collection</dd></div>
+            <div class="spec__row"><dt>Finish</dt><dd>Svart. Matchar HighLine Colour-panelerna.</dd></div>
+            <div class="spec__row"><dt>I bilden</dt><dd>Handduksstång, tvålpump, toalettborste, toalettrullehållare, pedalhink, hörnhylla</dd></div>
+            <div class="spec__row"><dt>Ingrepp</dt><dd>Inget. Ingen håltagning i tätskikt, inget golvarbete.</dd></div>
+            <div class="spec__row"><dt>Vad det visar</dt><dd>Att en genomtänkt detaljnivå räcker för att ändra intrycket av ett helt rum</dd></div>
+          </dl>
+        </div>
+
+        <figure class="niva__shot ring framed is-fig rv" style="margin:0">
+          <img src="assets/img/efter-komplett.jpg" alt="Badrummet med svarta Reframe-tillbehör: handduksstång, tvålpump, toalettborste, rullhållare, pedalhink och hörnhylla i duschen." width="1500" height="2000" loading="lazy" decoding="async">
+          <figcaption>Nivå 01</figcaption>
+        </figure>
+      </div>
+
+      <div class="parts rv" role="list">
+        <div class="part" role="listitem"><img src="assets/img/rf-handduksstang.jpg" alt="Handduksstång" width="400" height="230" loading="lazy"><span>Handduksstång</span></div>
+        <div class="part" role="listitem"><img src="assets/img/rf-tvalpump.jpg" alt="Tvålpump" width="400" height="230" loading="lazy"><span>Tvålpump</span></div>
+        <div class="part" role="listitem"><img src="assets/img/rf-pedalhink.jpg" alt="Pedalhink" width="400" height="230" loading="lazy"><span>Pedalhink</span></div>
+        <div class="part" role="listitem"><img src="assets/img/rf-hornhylla.jpg" alt="Hörnhylla" width="400" height="230" loading="lazy"><span>Hörnhylla</span></div>
+        <div class="part" role="listitem"><img src="assets/img/rf-toalettborste.jpg" alt="Toalettborste" width="400" height="230" loading="lazy"><span>Toalettborste</span></div>
+        <div class="part" role="listitem"><img src="assets/img/rf-rullhallare.jpg" alt="Toalettrullehållare" width="400" height="230" loading="lazy"><span>Rullhållare</span></div>
+      </div>
+    </section>
+
+    <!-- ================================================= nivå 02 -->
+    <section class="niva band" id="niva-02">
+      <div class="niva__head rv">
+        <span class="niva__n num">02</span>
+        <div>
+          <h2 class="h2">Hela steget</h2>
+          <p class="label" style="margin:.5rem 0 0">GlassLine · svart ram</p>
+        </div>
+      </div>
+
+      <div class="niva__grid">
+        <div>
+          <div class="prose rv">
+            <p>Duschen är rummets blickfång. Byts den rundade kromkabinen mot en rak glaspanel med smal svart kantprofil ändras hela intrycket, och golvbrunnen får sin självklara plats i samma formspråk.</p>
+          </div>
+          <dl class="spec rv">
+            <div class="spec__row"><dt>Serie</dt><dd>GlassLine, svart ram</dd></div>
+            <div class="spec__row"><dt>Glas</dt><dd>Härdat, nanobehandlat för enklare rengöring</dd></div>
+            <div class="spec__row"><dt>Infästning</dt><dd>Utan synliga skruvar eller beslag</dd></div>
+            <div class="spec__row"><dt>Montage</dt><dd>I ShowerLine, som gjuts in i golvet och ger 2 % fall</dd></div>
+            <div class="spec__row"><dt>Golvbrunn</dt><dd>HighLine Colour i svart, samma färg som tillbehören</dd></div>
+            <div class="spec__row"><dt>Alternativ</dt><dd><em>HighLine Custom — kakelplattan läggs på, brunnen försvinner nästan helt</em></dd></div>
+          </dl>
+
+          <div class="caveat rv">
+            <b>Förutsättning</b>
+            Du sa det själv: duschväggarna sätts normalt inte in i efterhand utan en fullständig renovering. Vi har inte gömt det. Nivå 02 är med för att den visar vart rummet kan ta vägen — och för att det är där golvbrunnen hör hemma.
+          </div>
+        </div>
+
+        <figure class="niva__shot ring framed is-fig rv" style="margin:0">
+          <img src="assets/img/glassline-black-ref.jpg" alt="GlassLine med svart ram, Unidrains egen produktbild." width="800" height="460" loading="lazy" decoding="async">
+          <figcaption>GlassLine Black · er bild</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ================================================== frågor -->
+    <section class="niva band" id="fragor">
+      <div class="niva__head rv">
+        <span class="niva__n num">03</span>
+        <div>
+          <h2 class="h2">Tre frågor</h2>
+          <p class="label" style="margin:.5rem 0 0">Tillbaka till dig</p>
+        </div>
+      </div>
+
+      <ol class="ask__list">
+        <li class="ask__item rv">
+          <span class="label num" style="padding-top:.4rem">01</span>
+          <div>
+            <p class="ask__q">Är det rätt produkter vi lyft fram?</p>
+            <p class="ask__note">Du känner sortimentet bättre än vi gör. Läser något fel vill vi veta det innan vi går vidare.</p>
+          </div>
+        </li>
+        <li class="ask__item rv">
+          <span class="label num" style="padding-top:.4rem">02</span>
+          <div>
+            <p class="ask__q">Hur vill du att vi hanterar duschväggen?</p>
+            <p class="ask__note">Vi kan hålla den som visionsbild, eller lägga hela tyngden på nivå 01. Din bedömning avgör.</p>
+          </div>
+        </li>
+        <li class="ask__item rv">
+          <span class="label num" style="padding-top:.4rem">03</span>
+          <div>
+            <p class="ask__q">Finns det något ni hellre vill se i fokus?</p>
+            <p class="ask__note">Säg bara till vad som skulle lyfta er kommunikation just nu, så bygger vi kring det istället.</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="close rv">
+        <p class="voice" style="margin:0">När det passar dig, Johannes. Ett svar i tråden räcker gott.</p>
+        <div>
+          <span class="label" style="display:block;margin-bottom:.35rem">Upplägg av</span>
+          <span style="font-size:1rem">Carin, Villa Sjövik</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Underlag till Unidrain, augusti 2026. Bilderna på nivå 01 och 02 är visualiseringar av Villa Sjöviks eget badrum.</span>
+      <img src="assets/img/unidrain.svg" alt="" width="900" height="132">
+    </footer>
+
+  </div></div>
+</div>
+
+<script>
+document.documentElement.classList.add('js');
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* avslöjanden */
+  var targets = document.querySelectorAll('.rv');
+  if (!('IntersectionObserver' in window) || reduce) {
+    targets.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (!e.isIntersecting) return;
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+    targets.forEach(function(el){ io.observe(el); });
+  }
+
+  /* --------------------------------------------------- snap-nav + rälsen */
+  var SECS = [
+    {id:'intro',   name:'Intro'},
+    {id:'niva-01', name:'Uppfräschningen'},
+    {id:'niva-02', name:'Hela steget'},
+    {id:'fragor',  name:'Tre frågor'}
+  ];
+  var nav = document.getElementById('snapnav'),
+      dots = document.getElementById('snapdots'),
+      rail = document.getElementById('snaprail'),
+      lbl  = document.getElementById('snaplbl');
+
+  SECS.forEach(function(sec, i){
+    var b = document.createElement('button');
+    b.className = 'snap-w' + (i === 0 ? ' is-active' : '');
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Gå till ' + sec.name);
+    b.innerHTML = '<span class="snap-d"></span><span class="snap-n">' + sec.name + '</span>';
+    b.addEventListener('click', function(){
+      var t = document.getElementById(sec.id);
+      if (t) t.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'start'});
+    });
+    dots.appendChild(b);
+
+    var r = document.createElement('button');
+    r.className = 'rail-d' + (i === 0 ? ' is-active' : '');
+    r.type = 'button';
+    r.setAttribute('aria-label', 'Gå till ' + sec.name);
+    r.addEventListener('click', function(){
+      var t = document.getElementById(sec.id);
+      if (t) t.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'start'});
+    });
+    rail.appendChild(r);
+  });
+
+  var wraps = dots.querySelectorAll('.snap-w'),
+      rails = rail.querySelectorAll('.rail-d');
+
+  function mark(i){
+    wraps.forEach(function(w, n){ w.classList.toggle('is-active', n === i); });
+    rails.forEach(function(w, n){ w.classList.toggle('is-active', n === i); });
+    lbl.textContent = SECS[i].name;
+  }
+
+  if ('IntersectionObserver' in window) {
+    var navIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (!e.isIntersecting) return;
+        var i = SECS.findIndex(function(x){ return x.id === e.target.id; });
+        if (i > -1) mark(i);
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    SECS.forEach(function(sec){
+      var el = document.getElementById(sec.id);
+      if (el) navIO.observe(el);
+    });
+  }
+  /* navet dyker upp först när man lämnat första vyn */
+  addEventListener('scroll', function(){
+    nav.classList.toggle('on', scrollY > innerHeight * 0.55);
+  }, { passive: true });
+
+  /* ----------------------------------- ljuspölarna följer pekaren, mjukt */
+  var par = document.getElementById('par');
+  if (par && !reduce && matchMedia('(hover:hover) and (pointer:fine)').matches) {
+    var tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+    addEventListener('pointermove', function(e){
+      tx = (e.clientX / innerWidth - .5) * 26;
+      ty = (e.clientY / innerHeight - .5) * 18;
+      if (!raf) raf = requestAnimationFrame(loop);
+    }, { passive: true });
+    function loop(){
+      cx += (tx - cx) * .045; cy += (ty - cy) * .045;
+      par.style.transform = 'translate3d(' + cx.toFixed(2) + 'px,' + cy.toFixed(2) + 'px,0)';
+      raf = (Math.abs(tx - cx) > .1 || Math.abs(ty - cy) > .1) ? requestAnimationFrame(loop) : null;
+    }
+  }
+
+  /* Före/efter pendlar av sig själv. Den som ändå vill styra får ta över med
+     pekaren; pendeln lämnas då åt användaren, som Kowalski säger om avbrott. */
+  var compare = document.querySelector('.compare');
+  if (!compare || reduce) return;
+  var taken = false;
+
+  function setWipe(clientX){
+    var r = compare.getBoundingClientRect();
+    var pct = Math.min(100, Math.max(0, ((clientX - r.left) / r.width) * 100));
+    compare.style.setProperty('--wipe', pct.toFixed(2) + '%');
+  }
+  function takeOver(e){
+    if (!taken) { taken = true; compare.style.animation = 'none'; compare.style.cursor = 'ew-resize'; }
+    setWipe(e.clientX);
+  }
+  compare.addEventListener('pointerdown', function(e){
+    compare.setPointerCapture(e.pointerId);
+    takeOver(e);
+  });
+  compare.addEventListener('pointermove', function(e){
+    if (e.buttons === 1) takeOver(e);
+  });
+})();
+</script>
+</body>
+</html>
