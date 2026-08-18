@@ -12,10 +12,10 @@ tre frågor tillbaka.
 
 | Sektion | Innehåll |
 |---|---|
-| Hero | Före/efter-pendel som svepar av sig själv, mätt med måttlinjer |
+| Hero | En före/efter-pendel som svepar av sig själv. Efter-läget visar allt på en gång: GlassLine Black + svarta Reframe-tillbehör. Rubriken har stålglans och en måttlinje som ritar sig. |
 | Statement | Kopplar tillbaka till Johannes eget förslag på mötet |
-| 01 Uppfräschningen | Reframe Collection i svart. Inget ingrepp i golvet. |
-| 02 Hela steget | GlassLine Black. Med ShowerLine-förutsättningen uttalad. |
+| 01 Uppfräschningen | Reframe Collection i svart — riktiga produktbilder i svart finish, hämtade från unidrain.se. Inget ingrepp i golvet. |
+| 02 Hela steget | GlassLine Black isolerad, plus Unidrains egen produktbild. Med ShowerLine-förutsättningen uttalad. |
 | 03 Tre frågor | Produktval · duschväggens roll · vad de hellre vill lyfta |
 
 ## Designvärld

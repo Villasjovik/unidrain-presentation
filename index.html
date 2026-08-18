@@ -161,7 +161,42 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 /* --------------------------------------------------------------- typografi */
 h1,h2,h3{margin:0;font-weight:400;letter-spacing:-.035em;line-height:1.02;text-wrap:balance}
 .display{font-size:clamp(2.9rem,7.4vw,6.2rem);line-height:.93;letter-spacing:-.042em;color:#F1F7F9}
-.display em{font-style:normal;color:var(--mist-2);display:block}
+/* varje rad maskas och skjuts upp underifrån — clip-path, inte höjd */
+.display .w{display:block;overflow:hidden;padding-bottom:.06em}
+.display .w > span{display:block;transform:translateY(104%);
+  transition:transform 1s var(--ease-io)}
+.display.in .w:nth-child(1) > span{transition-delay:.05s}
+.display.in .w:nth-child(2) > span{transition-delay:.17s}
+.display.in .w > span{transform:none}
+.display em{font-style:normal;color:var(--mist-2)}
+/* stålglans som vandrar över första raden — sidans alive-signatur */
+.sheen{color:#F1F7F9;
+  background:linear-gradient(100deg,#F1F7F9 0%,#F1F7F9 36%,#FFFFFF 45%,#AECBD9 51%,#F1F7F9 59%,#F1F7F9 100%);
+  background-size:300% 100%;background-position:120% 0;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:sheen 8.5s ease-in-out 1.4s infinite}
+@keyframes sheen{0%,14%{background-position:120% 0}58%,100%{background-position:-30% 0}}
+/* måttlinje under rubriken — linjen ritar sig, etiketten tonar in efter.
+   Linjen och texten måste vara skilda element: clip-path på en 1px-linje
+   klipper annars bort etiketten som sitter i den. */
+.hrule{display:block;position:relative;height:14px;margin-top:1.5rem;max-width:22rem}
+.hrule i{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--gauge);opacity:.85;
+  clip-path:inset(0 100% 0 0);transition:clip-path 1.15s var(--ease-io) .45s}
+.display.in .hrule i{clip-path:inset(0 0 0 0)}
+.hrule i::before,.hrule i::after{content:'';position:absolute;top:-4px;height:9px;width:1px;
+  background:var(--gauge)}
+.hrule i::before{left:0}.hrule i::after{right:0}
+.hrule b{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--wet);
+  padding:0 .6rem;font-size:11px;font-weight:400;letter-spacing:.13em;color:#9DC2D6;
+  font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1;
+  opacity:0;transition:opacity .55s var(--ease) 1.3s}
+.display.in .hrule b{opacity:1}
+@media (prefers-reduced-motion:reduce){
+  .display .w > span{transform:none}
+  .hrule i{clip-path:none}
+  .hrule b{opacity:1;transition:none}
+  .sheen{animation:none;-webkit-text-fill-color:#F1F7F9}
+}
 .h2{font-size:clamp(1.75rem,3.9vw,3.1rem);line-height:1.05}
 .h3{font-size:clamp(1.2rem,1.5vw + .85rem,1.85rem);letter-spacing:-.028em}
 .lead{max-width:34ch;color:var(--mist-2);font-size:clamp(1.02rem,.55vw + .88rem,1.28rem);line-height:1.5}
@@ -190,9 +225,12 @@ header.mast .who{display:flex;gap:1.6rem;align-items:baseline;flex-wrap:wrap}
 /* ------------------------------------------------- före/efter, den mätta */
 @property --wipe{syntax:'<percentage>';inherits:true;initial-value:100%}
 
-.plate{position:relative;padding:2.4rem 2.9rem 0 0;--wipe:100%}
+.plate{position:relative;padding:2.7rem 3.3rem 0 0;--wipe:100%}
+/* ramen sitter på wrappern runt bilden, inte på plåten — annars matchar den
+   plåtens paddning i stället för bildens kant */
+.shot-wrap{position:relative}
 .compare{position:relative;overflow:hidden;background:var(--wet-2);
-  aspect-ratio:3/4;box-shadow:0 24px 60px -24px rgba(0,0,0,.75);
+  aspect-ratio:3/4;box-shadow:0 24px 60px -24px rgba(0,0,0,.75),inset 0 0 0 1px rgba(220,230,234,.14);
   animation:pendel 7.6s var(--ease-io) .7s infinite}
 .compare img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   filter:saturate(.86) contrast(1.04) brightness(.94)}
@@ -214,12 +252,12 @@ header.mast .who{display:flex;gap:1.6rem;align-items:baseline;flex-wrap:wrap}
 .tag.l{left:.75rem;color:var(--mist);background:rgba(12,16,19,.62)}
 .tag.r{right:.75rem;color:#08131B;background:var(--steel-b)}
 
-/* måttlinjer, hämtade ur ritningsvärlden */
-.dimh,.dimv{position:absolute;color:var(--gauge);pointer-events:none}
-.dimh{left:0;right:2.9rem;top:1.15rem;height:1px;background:currentColor;opacity:.75}
+/* måttlinjer, hämtade ur ritningsvärlden — spänner exakt över bildens kanter */
+.dimh,.dimv{position:absolute;color:var(--gauge);pointer-events:none;opacity:.8}
+.dimh{left:0;right:0;top:-1.9rem;height:1px;background:currentColor}
 .dimh::before,.dimh::after{content:'';position:absolute;top:-4px;height:9px;width:1px;background:currentColor}
 .dimh::before{left:0}.dimh::after{right:0}
-.dimv{top:2.4rem;bottom:0;right:1.35rem;width:1px;background:currentColor;opacity:.75}
+.dimv{top:0;bottom:0;right:-2.1rem;width:1px;background:currentColor}
 .dimv::before,.dimv::after{content:'';position:absolute;left:-4px;width:9px;height:1px;background:currentColor}
 .dimv::before{top:0}.dimv::after{bottom:0}
 .dimh span,.dimv span{position:absolute;background:var(--wet);padding:0 .45rem;
@@ -259,8 +297,8 @@ header.mast .who{display:flex;gap:1.6rem;align-items:baseline;flex-wrap:wrap}
   font-size:10px;letter-spacing:.18em;text-transform:uppercase}
 
 /* delarna */
-.parts{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));
-  gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:clamp(1.8rem,4vh,3rem)}
+.parts{display:grid;grid-template-columns:repeat(auto-fit,minmax(136px,1fr));
+  gap:1px;background:var(--rule);border:1px solid var(--rule)}
 /* delarna ligger som ljusa katalogplattor mot den våta grunden */
 .part{background:#E9ECEC;padding:0;position:relative;
   transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
@@ -349,7 +387,11 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     <!-- ==================================================== hero -->
     <section class="hero" id="intro">
       <div>
-        <h1 class="display rv">Detaljen<em>som avgör</em></h1>
+        <h1 class="display rv">
+          <span class="w"><span class="sheen">Detaljen</span></span>
+          <em class="w"><span>som avgör</span></em>
+          <span class="hrule" aria-hidden="true"><i></i><b>1 240 mm</b></span>
+        </h1>
         <p class="lead rv">Du bad om att få se hur vi tänker oss förvandlingen. Här är rummet, och två nivåer att ta det till.</p>
         <div class="hero__meta rv">
           <div><span class="label">Objekt</span><span class="v">Villa Sjövik, badrum</span></div>
@@ -358,16 +400,18 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         </div>
       </div>
 
-      <div class="plate framed rv">
-        <div class="dimh" aria-hidden="true"><span>1 240</span></div>
-        <div class="dimv" aria-hidden="true"><span>2 100</span></div>
-        <figure class="compare ring" style="margin:0">
-          <img class="before" src="assets/img/fore.jpg" alt="Badrummet på Villa Sjövik idag, med en rundad duschkabin i krom." width="1500" height="2000" fetchpriority="high">
-          <img class="after" src="assets/img/efter-glassline.jpg" alt="Samma badrum med en rak glaspanel med smal svart kantprofil i duschhörnet." width="1500" height="2000">
-          <span class="handle" aria-hidden="true"></span>
-          <figcaption class="tag l">Idag</figcaption>
-          <span class="tag r">GlassLine Black</span>
-        </figure>
+      <div class="plate rv">
+        <div class="shot-wrap framed">
+          <span class="dimh" aria-hidden="true"><span>1 240</span></span>
+          <span class="dimv" aria-hidden="true"><span>2 100</span></span>
+          <figure class="compare" style="margin:0">
+            <img class="before" src="assets/img/fore.jpg" alt="Badrummet på Villa Sjövik idag, med en rundad duschkabin i krom." width="1500" height="2000" fetchpriority="high">
+            <img class="after" src="assets/img/efter-komplett.jpg" alt="Samma badrum med en rak glaspanel med smal svart kantprofil och svarta Reframe-tillbehör." width="1500" height="2000">
+            <span class="handle" aria-hidden="true"></span>
+            <figcaption class="tag l">Idag</figcaption>
+            <span class="tag r">GlassLine Black + Reframe</span>
+          </figure>
+        </div>
       </div>
     </section>
 
@@ -405,20 +449,16 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
           </dl>
         </div>
 
-        <figure class="niva__shot ring framed is-fig rv" style="margin:0">
-          <img src="assets/img/efter-komplett.jpg" alt="Badrummet med svarta Reframe-tillbehör: handduksstång, tvålpump, toalettborste, rullhållare, pedalhink och hörnhylla i duschen." width="1500" height="2000" loading="lazy" decoding="async">
-          <figcaption>Nivå 01</figcaption>
-        </figure>
+        <div class="parts rv" role="list">
+          <div class="part" role="listitem"><img src="assets/img/rf-handduksstang.jpg" alt="Handduksstång i svart" width="400" height="230" loading="lazy"><span>Handduksstång</span></div>
+          <div class="part" role="listitem"><img src="assets/img/rf-tvalpump.jpg" alt="Tvålpump i svart" width="400" height="230" loading="lazy"><span>Tvålpump</span></div>
+          <div class="part" role="listitem"><img src="assets/img/rf-pedalhink.jpg" alt="Pedalhink i svart" width="400" height="230" loading="lazy"><span>Pedalhink</span></div>
+          <div class="part" role="listitem"><img src="assets/img/rf-hornhylla.jpg" alt="Hörnhylla i svart" width="400" height="230" loading="lazy"><span>Hörnhylla</span></div>
+          <div class="part" role="listitem"><img src="assets/img/rf-toalettborste.jpg" alt="Toalettborste i svart" width="400" height="230" loading="lazy"><span>Toalettborste</span></div>
+          <div class="part" role="listitem"><img src="assets/img/rf-rullhallare.jpg" alt="Toalettrullehållare i svart" width="400" height="230" loading="lazy"><span>Rullhållare</span></div>
+        </div>
       </div>
 
-      <div class="parts rv" role="list">
-        <div class="part" role="listitem"><img src="assets/img/rf-handduksstang.jpg" alt="Handduksstång" width="400" height="230" loading="lazy"><span>Handduksstång</span></div>
-        <div class="part" role="listitem"><img src="assets/img/rf-tvalpump.jpg" alt="Tvålpump" width="400" height="230" loading="lazy"><span>Tvålpump</span></div>
-        <div class="part" role="listitem"><img src="assets/img/rf-pedalhink.jpg" alt="Pedalhink" width="400" height="230" loading="lazy"><span>Pedalhink</span></div>
-        <div class="part" role="listitem"><img src="assets/img/rf-hornhylla.jpg" alt="Hörnhylla" width="400" height="230" loading="lazy"><span>Hörnhylla</span></div>
-        <div class="part" role="listitem"><img src="assets/img/rf-toalettborste.jpg" alt="Toalettborste" width="400" height="230" loading="lazy"><span>Toalettborste</span></div>
-        <div class="part" role="listitem"><img src="assets/img/rf-rullhallare.jpg" alt="Toalettrullehållare" width="400" height="230" loading="lazy"><span>Rullhållare</span></div>
-      </div>
     </section>
 
     <!-- ================================================= nivå 02 -->
@@ -451,10 +491,16 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
           </div>
         </div>
 
-        <figure class="niva__shot ring framed is-fig rv" style="margin:0">
-          <img src="assets/img/glassline-black-ref.jpg" alt="GlassLine med svart ram, Unidrains egen produktbild." width="800" height="460" loading="lazy" decoding="async">
-          <figcaption>GlassLine Black · er bild</figcaption>
-        </figure>
+        <div class="rv">
+          <figure class="niva__shot ring framed is-fig" style="margin:0">
+            <img src="assets/img/efter-glassline.jpg" alt="Badrummet med den rundade kromkabinen utbytt mot en rak glaspanel med smal svart kantprofil." width="1500" height="2000" loading="lazy" decoding="async">
+            <figcaption>Enbart duschväggen</figcaption>
+          </figure>
+          <figure class="niva__shot ring framed is-fig" style="margin:2.6rem 0 0">
+            <img src="assets/img/glassline-black-ref.jpg" alt="GlassLine med svart ram, Unidrains egen produktbild." width="800" height="460" loading="lazy" decoding="async">
+            <figcaption>Er egen bild</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
